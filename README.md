@@ -19,6 +19,8 @@ API is up and running
 ### Configure host for PXE boot 
 ```
 curl http://${your_container}:9090/pxe/${hostname}/${uuid}
+or 
+curl http://${your_container}:9090/pxe/${hostname}/${mac_address}
 ```
 
 <p align="center">
