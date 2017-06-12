@@ -26,5 +26,7 @@ curl http://${your_container}:9090/pxe/${hostname}/${uuid}
 </p>
 
 ### APIs Endpoints
+```
 /status
 /pxe/${hostname}/${uuid}
+```
