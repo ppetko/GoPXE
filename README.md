@@ -27,7 +27,7 @@ curl http://${your_container}:9090/pxe/${hostname}/${mac_address}
 <img src="img/pxe.gif" alt="docker-pxe" title="docker-pxe" />
 </p>
 
-### APIs Endpoints
+### API Endpoints
 ```
 /status
 /pxe/${hostname}/${uuid}
