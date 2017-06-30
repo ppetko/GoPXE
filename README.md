@@ -1,5 +1,12 @@
 # docker-pxe
 
+### Setup and Configurations
+1. Go to pxe folder - cd pxe 
+2. Modify pxe_api.go line 14 and specify your own kickstart file.
+3. Compile the code - go build pxe_api.go
+
+## Note: Why settle for static kickstart files, when you could generate them :). Please check my [Kickstart File Generator](https://github.com/ppetko/kickstart-generator)
+
 ### Build docker image
 ```
 sudo docker build -t docker-pxe -f Dockerfile .

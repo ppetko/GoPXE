@@ -11,7 +11,7 @@ import (
 
 var (
     tftp_conf string = "/var/lib/tftpboot/pxelinux.cfg/"
-    ks_server string = "Kickstart_File" // https://github.com/mycodinglab/kickstart-generator
+    ks_server string = "YOUR_KICKSTARTFILE.cfg" // Check out my Kickstart File Generator https://github.com/ppetko/kickstart-generator
 )
 
 func main() {
