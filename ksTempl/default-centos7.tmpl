@@ -1,0 +1,82 @@
+# Forces the text install to be used
+text
+
+# Tells kickstart to start the install
+install
+
+# Skips the display of any GUI during install
+skipx
+
+# Specifies the language
+lang en_US.UTF-8
+
+# Specifies the keyboard layout
+keyboard us
+
+# Used with an HTTP install to specify where the install files are located
+url --url http://mirror.centos.org/{{.os}}/{{.version}}/os/x86_64/
+
+# Setup the network interface
+{{ if and (.ip) (.fqdn) }}   
+network --bootproto=static --ip={{.ip}} --netmask={{.mask}} --gateway={{.gw}} --nameserver={{.ns1}} --nameserver={{.ns2}} --hostname={{.fqdn }} {{ end }}
+{{ if and (.fqdn) (not .ip ) }}  
+network --onboot yes --bootproto dhcp --noipv6 --hostname {{.fqdn }} {{ end }}
+
+# Set the root password
+rootpw --iscrypted $1$iu7Ryr.x$xapoDtZ5a3HAHdgrZjN6B/ ## password
+
+# Disable firewall
+firewall --disable
+
+# Disabled selinux
+selinux --disabled
+
+# Set the timezone
+timezone --utc UTC
+
+# Prepare all my drives. You must list drives that it will contain the OS
+clearpart --all --initlabel --drives=sda
+
+# Create the bootloader in the MBR with drive sda being the drive to install it on
+bootloader --location=mbr --driveorder=sda,sdb,sdc --append="crashkernel=auto rhgb"
+
+# Sets up the authentication options for the system
+auth  --useshadow  --passalgo=sha512
+
+# System bootloader configuration
+bootloader --location=none
+
+# Clear the Master Boot Record
+zerombr
+
+# Partition clearing information
+clearpart --all --initlabel
+
+# Disk partitioning information
+part /boot --fstype="xfs" --ondisk=sda --size=512
+part pv.01 --size=1 --ondisk=sda --grow
+volgroup vg1 pv.01
+logvol / --vgname=vg1 --size=8192 --name=root --fstype=xfs
+logvol /usr --vgname=vg1 --size=2048 --name=usr --fstype=xfs
+logvol /var --vgname=vg1 --size=3072 --name=var --fstype=xfs
+logvol /var/log --vgname=vg1 --size=1024 --name=var --fstype=xfs
+logvol /home --vgname=vg1 --size=2048 --name=home --fstype=xfs
+logvol swap --vgname=vg1 --recommended --name=swap --fstype=swap
+
+reboot
+
+%packages
+@core
+# List packages which will be installed after the OS finish installing.  
+%end
+
+%pre
+### You can add commands to run on the system immediately after the ks.cfg has been parsed.
+%end
+ 
+%post
+###  Anything in the %post section is treated as if you were
+### typing it at the console of a system. You can perform cus-
+### tomizations or execute other scripts for further configuration of
+### your system.
+%end
