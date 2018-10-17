@@ -16,8 +16,8 @@ docker pull ppetko/gopxe
 ### Configuration - edit the configuration files accordingly. Sample configs has been provided in the repo. 
 
 ```
-$ vi ./conf/dhcpd.conf 
-$ vi ./conf/tftpd.conf 
+vi ./conf/dhcpd.conf 
+vi ./conf/tftpd.conf 
 ```
 
 ### Start GoPXE using Docker image 
@@ -32,9 +32,9 @@ sudo docker run --rm --net=host --name goPXE -td \
 ## Build your own docker image 
 
 ```
-$ go get github.com/ppetko/gopxe
-$ cd $GOPATH/src/github.com/ppetko/gopxe
-$ sudo make docker-build
+go get github.com/ppetko/gopxe
+cd $GOPATH/src/github.com/ppetko/gopxe
+sudo make docker-build
 
 ```
 
@@ -169,7 +169,7 @@ sudo docker run --rm --net=host --name goPXE -td \
 - [ ] Currently suported OS is CentOS/RedHat by the default installation. But you could reconfigure GoPXE for any other OS of choice. 
 
 ## Pull requests welcome!
-Spotted an error? You have good idea on improvment? Send me a [pull request](github.com/ppetko/gopxe/pulls)! Thanks. 
+If you'd like to contribute to the project, refer to the [contributing documentation](CONTRIBUTING.md).
 
 ## License
 [Creative Commons Attribution License](http://creativecommons.org/licenses/by/2.0/)
