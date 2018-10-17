@@ -9,7 +9,6 @@ Download our docker image
 
 ```
 docker pull ppetko/gopxe
-
 ```
 
 ### Configuration - edit the configuration files accordingly. Sample configs has been provided in the repo. 
@@ -17,7 +16,6 @@ docker pull ppetko/gopxe
 ```
 $ vi ./conf/dhcpd.conf 
 $ vi ./conf/tftpd.conf 
-
 ```
 
 ### Start GoPXE using Docker image 
