@@ -1,0 +1,24 @@
+{{ define "content" }}
+
+<div class="container">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+    {{ range $key, $value := . }}
+  <tbody>
+    <tr>
+      <th scope="row">{{ $key }}</th>
+      <td>{{ $value }} </td>
+    </tr>
+  </tbody>
+    {{ end }}
+</table>
+<div class="dropdown-divider"></div>
+</div>
+
+{{ end }}

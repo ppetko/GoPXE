@@ -1,0 +1,70 @@
+text
+install
+skipx
+lang en_US.UTF-8
+keyboard us
+
+url --url http://mirror.centos.org/{{.os}}/{{.version}}/os/x86_64/
+
+{{ if and (.ip) (.fqdn) }}   
+network --bootproto=static --ip={{.ip}} --netmask={{.mask}} --gateway={{.gw}} --nameserver={{.ns1}} --nameserver={{.ns2}} --hostname={{.fqdn }} {{ end }}
+{{ if and (.fqdn) (not .ip ) }}  
+network --onboot yes --bootproto dhcp --noipv6 --hostname {{.fqdn }} {{ end }}
+
+rootpw --iscrypted $1$iu7Ryr.x$xapoDtZ5a3HAHdgrZjN6B/ ## password
+
+firewall --disable
+selinux --disabled
+timezone --utc UTC
+
+clearpart --all --initlabel --drives=sda
+bootloader --location=mbr --driveorder=sda,sdb,sdc --append="crashkernel=auto rhgb"
+authconfig --enableshadow --passalgo=sha512
+bootloader --location=mbr --driveorder=hda
+
+zerombr
+clearpart --all --initlabel --drives=sda
+part /boot/efi --fstype vfat --size=200 --ondisk=sda
+part /boot --fstype ext4 --size=1024 --ondisk=sda --asprimary
+part pv.100000 --size=100 --grow --ondisk=sda
+volgroup vg0 --pesize=32768 pv.100000
+logvol /     --fstype ext4 --name=root   --vgname=vg0 --size=8192
+logvol swap  --fstype swap --name=swap   --vgname=vg0 --size=2048
+logvol /tmp  --fstype ext4 --name=tmp    --vgname=vg0 --size=3072
+logvol /var  --fstype ext4 --name=var    --vgname=vg0 --size=3072
+logvol /home --fstype ext4 --name=home   --vgname=vg0 --size=2048
+
+reboot
+
+%packages
+@core
+git 
+ansible
+%end
+ 
+%post
+
+## Create ansible user
+useradd -m -d /home/ansible -s /bin/bash ansible
+mkdir /home/ansible/.ssh && touch /home/ansible/.ssh/authorized_keys
+
+### Create File
+cat <<EOF >/home/ansible/.ssh/authorized_keys
+FOOBAR
+EOF
+
+### set permissions
+chown -R ansible:ansible /home/ansible/.ssh
+chmod 700 /home/ansible/.ssh
+chmod 600 /home/ansible/.ssh/authorized_keys
+
+### fix selinux context
+##restorecon -R /home/ansible/.ssh/
+
+## git clone from your repo
+git clone $REPO
+
+## run ansible
+ansible-playbook -i inventory/hosts $playbook | tee -a /var/log/ansible-$(date +"%m%d%y").out
+
+%end
