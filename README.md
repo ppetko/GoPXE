@@ -1,5 +1,7 @@
 # GoPXE Project
 
+[![CircleCI](https://circleci.com/gh/ppetko/GoPXE/tree/master.svg?style=svg)](https://circleci.com/gh/ppetko/GoPXE/tree/master)
+
 ## Introduction
 GoPXE is a dynamic build system for installing various operating systems on virtual machines and bare metal servers using pxe boot, tftp and dhcp wrapped into docker container orchestrated by APIs. 
 
