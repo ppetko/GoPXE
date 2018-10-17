@@ -13,7 +13,7 @@ RUN cp -r /usr/share/syslinux/pxelinux.0 /var/lib/tftpboot
 ADD ./pxebootImages /var/lib/tftpboot
 RUN mkdir -p /gopxe/public ; mkdir /gopxe/ksTempl
 WORKDIR /gopxe
-COPY --from=builder /go/src/bitbucket.org/ppetkov85/docker-pxe/main /gopxe/
+COPY --from=builder /go/src/github.com/ppetko/gopxe/main /gopxe/
 ADD ./public /gopxe/public
 ADD ./ksTempl /gopxe/ksTempl
 ADD ./start-gopxe.sh /gopxe/

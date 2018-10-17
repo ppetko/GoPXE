@@ -26,6 +26,19 @@
   version = "v1.6.2"
 
 [[projects]]
+  branch = "dev/code-reorg"
+  digest = "1:25229c5454895ad19b89fa6ae0787855ea13f2b206147ad014fe1790f8a88018"
+  name = "github.com/ppetko/gopxe"
+  packages = [
+    "bbolt",
+    "conf",
+    "handlers",
+    "routes",
+  ]
+  pruneopts = "UT"
+  revision = "4b3952d1684834de572633fd45bfa71ad9ee5de4"
+
+[[projects]]
   branch = "master"
   digest = "1:0a40b0bdd57a93e741d8557465be3a2edeec408e9b6399586ad65bbe8e355796"
   name = "golang.org/x/sys"
@@ -39,6 +52,10 @@
   input-imports = [
     "github.com/coreos/bbolt",
     "github.com/gorilla/mux",
+    "github.com/ppetko/gopxe/bbolt",
+    "github.com/ppetko/gopxe/conf",
+    "github.com/ppetko/gopxe/handlers",
+    "github.com/ppetko/gopxe/routes",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

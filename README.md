@@ -1,15 +1,42 @@
 # GoPXE Project
----
-
-## Table of Contents
-* [Introduction](#Introduction)
-* [Build your own docker image](#Build-your-own-docker-image)
-* [Configuration](#Configuration)
-* [Run GoPXE](#Start-GoPXE-using-Docker-image)
-* [API Reference](#API-Reference)
 
 ## Introduction
-GoPXE is a dynamic build system (on-premises) for installing various operating systems on virtual machines and bare metal servers using pxe boot, tftp and dhcp wrapped into docker container and APIs. 
+GoPXE is a dynamic build system for installing various operating systems on virtual machines and bare metal servers using pxe boot, tftp and dhcp wrapped into docker container orchestrated by APIs. 
+
+## Quickstart
+
+Download our docker image 
+
+```
+docker pull ppetko/gopxe
+
+```
+
+### Configuration - edit the configuration files accordingly. Sample configs has been provided in the repo. 
+
+```
+$ vi ./conf/dhcpd.conf 
+$ vi ./conf/tftpd.conf 
+
+```
+
+### Start GoPXE using Docker image 
+
+```
+sudo docker run --rm --net=host --name goPXE -td \
+            --mount type=bind,source="$(pwd)"/conf/dhcpd.conf,target=/etc/dhcp/dhcpd.conf \
+            --mount type=bind,source="$(pwd)"/conf/tftpd.conf,target=/etc/xinetd.d/tftp \
+            ppetko/gopxe
+```
+
+## Build your own docker image 
+
+```
+$ go get github.com/ppetko/gopxe
+$ cd $GOPATH/src/github.com/ppetko/gopxe
+$ sudo make docker-build
+
+```
 
 ## How PXE works?
 
@@ -24,31 +51,6 @@ GoPXE is a dynamic build system (on-premises) for installing various operating s
 * The installer runs interactively or scripted, as directed by the PXE configuration file.
 * The installer uses remote repository, or locally content from ISO file.
 * OS is installed.
-
-## Build your own docker image 
-
-```
-$ go get github.com/ppetko/gopxe
-$ cd $GOPATH/src/github.com/ppetko/gopxe
-$ sudo make docker-build
-```
-
-### Configuration - edit the configuration files accordingly 
-
-```
-$ vi ./conf/dhcpd.conf 
-$ vi ./conf/tftpd.conf 
-
-```
-
-### Start GoPXE using Docker image 
-
-```
-sudo docker run --rm --net=host --name goPXE -td \
-            --mount type=bind,source="$(pwd)"/conf/dhcpd.conf,target=/etc/dhcp/dhcpd.conf \
-            --mount type=bind,source="$(pwd)"/conf/tftpd.conf,target=/etc/xinetd.d/tftp \
-            docker-pxe:latest
-```
 
 ## APIs Reference Examples
 
