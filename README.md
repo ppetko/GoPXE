@@ -1,11 +1,13 @@
 # GoPXE Project
 
+[![CircleCI](https://circleci.com/gh/ppetko/GoPXE/tree/master.svg?style=svg)](https://circleci.com/gh/ppetko/GoPXE/tree/master)
+
 ## Introduction
 GoPXE is a dynamic build system for installing various operating systems on virtual machines and bare metal servers using pxe boot, tftp and dhcp wrapped into docker container orchestrated by APIs. 
 
 ## Quickstart
 
-Download our docker image 
+Download docker image 
 
 ```
 docker pull ppetko/gopxe
@@ -14,25 +16,26 @@ docker pull ppetko/gopxe
 ### Configuration - edit the configuration files accordingly. Sample configs has been provided in the repo. 
 
 ```
-$ vi ./conf/dhcpd.conf 
-$ vi ./conf/tftpd.conf 
+curl -s https://raw.githubusercontent.com/ppetko/GoPXE/master/conf/dhcpd.conf -b dhcpd.conf
+curl -s https://raw.githubusercontent.com/ppetko/GoPXE/master/conf/tftpd.conf -b tftpd.conf
+vi dhcpd.conf # and edit accordingly.
 ```
 
 ### Start GoPXE using Docker image 
 
 ```
 sudo docker run --rm --net=host --name goPXE -td \
-            --mount type=bind,source="$(pwd)"/conf/dhcpd.conf,target=/etc/dhcp/dhcpd.conf \
-            --mount type=bind,source="$(pwd)"/conf/tftpd.conf,target=/etc/xinetd.d/tftp \
+            --mount type=bind,source="$(pwd)"/dhcpd.conf,target=/etc/dhcp/dhcpd.conf \
+            --mount type=bind,source="$(pwd)"/tftpd.conf,target=/etc/xinetd.d/tftp \
             ppetko/gopxe
 ```
 
 ## Build your own docker image 
 
 ```
-$ go get github.com/ppetko/gopxe
-$ cd $GOPATH/src/github.com/ppetko/gopxe
-$ sudo make docker-build
+go get github.com/ppetko/gopxe
+cd $GOPATH/src/github.com/ppetko/gopxe
+sudo make docker-build
 
 ```
 
@@ -145,7 +148,7 @@ sudo docker run --rm --net=host --name goPXE -td \
             --mount type=bind,source="$(pwd)"/conf/dhcpd.conf,target=/etc/dhcp/dhcpd.conf \
             --mount type=bind,source="$(pwd)"/conf/tftpd.conf,target=/etc/xinetd.d/tftp \
             --mount type=bind,source="/mnt/iso/",target=/opt/localrepo \
-            docker-pxe:latest
+            ppetko/gopxe
 ```
 
 ## TODO
@@ -154,7 +157,6 @@ sudo docker run --rm --net=host --name goPXE -td \
 - [ ] Add piplene build for the project.
 
 ## RoadMap
-- [ ] Add pxelinux configuration page https://golangcode.com/download-a-file-from-a-url/
 - [ ] Create Ansible  hook - API endpoint that accepts ansible run configs per specific host. 
 - [ ] Create status output of the job and perhaps synch the results back to the db. 
 - [ ] Add Status dashboard
@@ -167,7 +169,7 @@ sudo docker run --rm --net=host --name goPXE -td \
 - [ ] Currently suported OS is CentOS/RedHat by the default installation. But you could reconfigure GoPXE for any other OS of choice. 
 
 ## Pull requests welcome!
-Spotted an error? You have good idea on improvment? Send me a [pull request](github.com/ppetko/gopxe/pulls)! Thanks. 
+If you'd like to contribute to the project, refer to the [contributing documentation](CONTRIBUTING.md).
 
 ## License
 [Creative Commons Attribution License](http://creativecommons.org/licenses/by/2.0/)
